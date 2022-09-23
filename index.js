@@ -3,13 +3,15 @@
 require("dotenv").config();
 
 // Import express
-let express = require("express");
+const express = require("express");
 
 // Import Body parser
-let bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 
 // Import Mongoose
-let mongoose = require("mongoose");
+const mongoose = require("mongoose");
+
+const apiErrorHandler = require("./error/api-error-handler");
 
 let uri =
   process.env.ENV == "PROD"
@@ -51,6 +53,9 @@ app.get("/", (req, res) => res.send("Hello World with Express and Nodemon"));
 
 // Use Api routes in the App
 app.use("/api", apiRoutes);
+
+// Error handling
+app.use(apiErrorHandler);
 
 // Launch app to listen to specified port
 app.listen(port, function () {
