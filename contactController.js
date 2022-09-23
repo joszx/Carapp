@@ -94,7 +94,7 @@ exports.delete = function (req, res, next) {
     function (err, contact) {
       if (err) {
         // res.send(err);
-        next(ApiError.badRequest(err));
+        next(ApiError.notFound(err));
         return;
       }
       res.json({
