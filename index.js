@@ -61,3 +61,5 @@ app.use(apiErrorHandler);
 app.listen(port, function () {
   console.log("Running Carapp on port " + port);
 });
+
+module.exports = app; // for testing
