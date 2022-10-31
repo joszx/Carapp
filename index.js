@@ -14,7 +14,7 @@ const mongoose = require("mongoose");
 const apiErrorHandler = require("./error/api-error-handler");
 
 let uri =
-  process.env.ENV == "PROD"
+  process.env.ENV == "PROD" || process.env.ENV == "TEST"
     ? process.env.DB_CLOUD_URI
     : process.env.DB_LOCAL_URI;
 
