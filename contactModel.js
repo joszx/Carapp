@@ -22,7 +22,7 @@ var contactSchema = mongoose.Schema(
       default: Date.now,
     },
   },
-  { collection: process.env.ENV == "TEST" ? "contactsTest" : "contacts" } // collection in mongodb
+  { collection: process.env.ENV == "TEST" ? "testcontacts" : "contacts" } // collection in mongodb
 );
 
 // Export Contact model
