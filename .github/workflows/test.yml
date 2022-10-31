@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DB_CLOUD_URI: ${{ secrets.DB_CLOUD_URI }}
+      ENV: ${{ secrets.ENV }}
 
     strategy:
       matrix:
