@@ -1,5 +1,5 @@
 // FileName: index.js
-import cors from "cors";
+const cors = require("cors");
 require("dotenv").config();
 
 // Import express
