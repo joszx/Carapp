@@ -33,7 +33,11 @@ app.use(
 
 app.use(bodyParser.json());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 // Connect to Mongoose and set connection variable
 // Deprecated: mongoose.connect('mongodb://localhost/Carapp');
