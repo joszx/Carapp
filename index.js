@@ -1,5 +1,5 @@
 // FileName: index.js
-
+import cors from "cors";
 require("dotenv").config();
 
 // Import express
@@ -32,6 +32,8 @@ app.use(
 );
 
 app.use(bodyParser.json());
+
+app.use(cors());
 
 // Connect to Mongoose and set connection variable
 // Deprecated: mongoose.connect('mongodb://localhost/Carapp');
