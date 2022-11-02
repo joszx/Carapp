@@ -1,8 +1,12 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-export default function ContactForm() {
+export default function ContactForm({
+  contact,
+  addContact,
+  updateContactsList,
+}) {
   const {
     register,
     handleSubmit,
@@ -13,7 +17,9 @@ export default function ContactForm() {
 
   const onSubmit = (data) => {
     // Send to server, check if updating or creating new
+    addContact(data.name, data.email, data.phone, data.gender);
     reset();
+    updateContactsList();
     console.log(data);
   };
 
@@ -26,6 +32,7 @@ export default function ContactForm() {
             className="input"
             type="text"
             placeholder="John Doe"
+            defaultValue={contact != null ? contact.name : ""}
             {...register("name", { required: true, maxLength: 100 })}
           />
         </div>
@@ -38,6 +45,7 @@ export default function ContactForm() {
             className="input"
             type="text"
             placeholder="example@email.com"
+            defaultValue={contact != null ? contact.email : ""}
             {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
           />
         </div>
@@ -53,6 +61,7 @@ export default function ContactForm() {
                 className="input"
                 type="undefined"
                 placeholder="91234567"
+                defaultValue={contact != null ? contact.phone : ""}
                 {...register("phone", {
                   required: false,
                   pattern: /^[0-9]{8}$/i,
@@ -67,11 +76,38 @@ export default function ContactForm() {
             <label className="label has-text-white">Gender</label>
             <div className="control">
               <div className="select">
-                <select {...register("gender")}>
+                <select
+                  {...register("gender")}
+                  defaultValue={contact != null ? contact.gender : ""}
+                >
                   <option></option>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Non-binary</option>
+                  <option
+                    selected={
+                      contact != null && contact.gender === "Male"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    Male
+                  </option>
+                  <option
+                    selected={
+                      contact != null && contact.gender === "Female"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    Female
+                  </option>
+                  <option
+                    selected={
+                      contact != null && contact.gender === "Non-binary"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    Non-binary
+                  </option>
                 </select>
               </div>
             </div>
