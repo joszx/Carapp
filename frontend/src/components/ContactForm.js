@@ -9,6 +9,13 @@ export default function ContactForm({
   updateContactsList,
   setEditState,
 }) {
+  const defaultValues = {
+    name: contact != null ? contact.name : "",
+    email: contact != null ? contact.email : "",
+    phone: contact != null ? contact.phone : "",
+    gender: contact != null ? contact.gender : "",
+  };
+
   const {
     register,
     handleSubmit,
@@ -17,7 +24,9 @@ export default function ContactForm({
     setValue,
     setError,
     formState: { errors },
-  } = useForm({});
+  } = useForm({
+    defaultValues: defaultValues,
+  });
 
   const onSubmit = (data) => {
     if (contact != null) {
@@ -33,12 +42,7 @@ export default function ContactForm({
   };
 
   useEffect(() => {
-    reset({
-      name: contact != null ? contact.name : "",
-      email: contact != null ? contact.email : "",
-      phone: contact != null ? contact.phone : "",
-      gender: contact != null ? contact.gender : "",
-    });
+    reset(defaultValues);
   }, [contact]);
 
   return (
@@ -50,9 +54,12 @@ export default function ContactForm({
             className="input"
             type="text"
             placeholder="John Doe"
-            //defaultValue={contact != null ? contact.name : ""}
-            {...register("name", { required: true, maxLength: 100 })}
+            {...register("name", {
+              required: "Name is required",
+              maxLength: 100,
+            })}
           />
+          <p class="help is-danger">{errors.name?.message}</p>
         </div>
       </div>
 
@@ -63,9 +70,15 @@ export default function ContactForm({
             className="input"
             type="text"
             placeholder="example@email.com"
-            //defaultValue={contact != null ? contact.email : ""}
-            {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: "Email is invalid",
+              },
+            })}
           />
+          <p class="help is-danger">{errors.email?.message}</p>
         </div>
         {/* <p class="help is-danger">This email is invalid</p> */}
       </div>
@@ -79,12 +92,15 @@ export default function ContactForm({
                 className="input"
                 type="undefined"
                 placeholder="91234567"
-                //defaultValue={contact != null ? contact.phone : ""}
                 {...register("phone", {
                   required: false,
-                  pattern: /^[0-9]{8}$/i,
+                  pattern: {
+                    value: /^[0-9]{8}$/i,
+                    message: "Phone number required 8 digits",
+                  },
                 })}
               />
+              <p class="help is-danger">{errors.phone?.message}</p>
             </div>
           </div>
         </div>
@@ -100,6 +116,7 @@ export default function ContactForm({
                   <option value="Female">Female</option>
                   <option value="Non-binary">Non-binary</option>
                 </select>
+                {/* <p class="help is-danger">{errors.gender?.message}</p> // gender has no error currently */}
               </div>
             </div>
           </div>
