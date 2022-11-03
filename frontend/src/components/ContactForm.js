@@ -5,23 +5,41 @@ import { useForm } from "react-hook-form";
 export default function ContactForm({
   contact,
   addContact,
+  updateContact,
   updateContactsList,
+  setEditState,
 }) {
   const {
     register,
     handleSubmit,
     watch,
     reset,
+    setValue,
+    setError,
     formState: { errors },
-  } = useForm();
+  } = useForm({});
 
   const onSubmit = (data) => {
-    // Send to server, check if updating or creating new
-    addContact(data.name, data.email, data.phone, data.gender);
+    if (contact != null) {
+      // contact exits, update this contact
+      updateContact(data.name, data.email, data.phone, data.gender);
+    } else {
+      // contact doesnt exist, create new contact
+      addContact(data.name, data.email, data.phone, data.gender);
+    }
     reset();
     updateContactsList();
-    console.log(data);
+    setEditState("");
   };
+
+  useEffect(() => {
+    reset({
+      name: contact != null ? contact.name : "",
+      email: contact != null ? contact.email : "",
+      phone: contact != null ? contact.phone : "",
+      gender: contact != null ? contact.gender : "",
+    });
+  }, [contact]);
 
   return (
     <form className="has-text-left" onSubmit={handleSubmit(onSubmit)}>
@@ -32,7 +50,7 @@ export default function ContactForm({
             className="input"
             type="text"
             placeholder="John Doe"
-            defaultValue={contact != null ? contact.name : ""}
+            //defaultValue={contact != null ? contact.name : ""}
             {...register("name", { required: true, maxLength: 100 })}
           />
         </div>
@@ -45,7 +63,7 @@ export default function ContactForm({
             className="input"
             type="text"
             placeholder="example@email.com"
-            defaultValue={contact != null ? contact.email : ""}
+            //defaultValue={contact != null ? contact.email : ""}
             {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
           />
         </div>
@@ -61,7 +79,7 @@ export default function ContactForm({
                 className="input"
                 type="undefined"
                 placeholder="91234567"
-                defaultValue={contact != null ? contact.phone : ""}
+                //defaultValue={contact != null ? contact.phone : ""}
                 {...register("phone", {
                   required: false,
                   pattern: /^[0-9]{8}$/i,
@@ -76,38 +94,11 @@ export default function ContactForm({
             <label className="label has-text-white">Gender</label>
             <div className="control">
               <div className="select">
-                <select
-                  {...register("gender")}
-                  defaultValue={contact != null ? contact.gender : ""}
-                >
-                  <option></option>
-                  <option
-                    selected={
-                      contact != null && contact.gender === "Male"
-                        ? "selected"
-                        : ""
-                    }
-                  >
-                    Male
-                  </option>
-                  <option
-                    selected={
-                      contact != null && contact.gender === "Female"
-                        ? "selected"
-                        : ""
-                    }
-                  >
-                    Female
-                  </option>
-                  <option
-                    selected={
-                      contact != null && contact.gender === "Non-binary"
-                        ? "selected"
-                        : ""
-                    }
-                  >
-                    Non-binary
-                  </option>
+                <select {...register("gender")}>
+                  <option value=""></option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Non-binary">Non-binary</option>
                 </select>
               </div>
             </div>
@@ -118,7 +109,7 @@ export default function ContactForm({
       <input
         className="button mt-3 is-fullwidth is-link"
         type="submit"
-        value="Add contact"
+        value={contact != null ? "Edit contact" : "Add contact"}
       ></input>
     </form>
   );

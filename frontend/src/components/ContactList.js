@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ContactForm from "./ContactForm";
 import axios from "axios";
 
@@ -10,6 +10,7 @@ export default function ContactList() {
   const [contacts, setContacts] = useState([]);
   const [editState, setEditState] = useState("");
   const [contactToEdit, setContactToEdit] = useState({});
+  const componentDidMount = useRef(false);
 
   const updateContactsList = () => {
     const fetchContacts = async () => {
@@ -58,11 +59,17 @@ export default function ContactList() {
   };
 
   const handleEditContact = (contact) => {
-    setEditState("is-active");
     setContactToEdit(contact);
   };
 
-  const updateContact = async () => {};
+  useEffect(() => {
+    console.log(componentDidMount.current);
+    if (componentDidMount.current) {
+      setEditState("is-active");
+    } else {
+      componentDidMount.current = true;
+    }
+  }, [contactToEdit]);
 
   // Delete with Axios
   const handleDeleteContact = async (id) => {
@@ -73,6 +80,17 @@ export default function ContactList() {
   // Post with Axios
   const addContact = async (name, email, phone, gender) => {
     let response = await client.post("", {
+      name: name,
+      email: email,
+      phone: phone,
+      gender: gender,
+    });
+    updateContactsList();
+  };
+
+  // Put or Update with Axios
+  const updateContact = async (name, email, phone, gender) => {
+    let response = await client.put(`${contactToEdit._id}`, {
       name: name,
       email: email,
       phone: phone,
@@ -125,24 +143,11 @@ export default function ContactList() {
             </div> */}
             <ContactForm
               contact={contactToEdit}
-              addContact={updateContact}
+              updateContact={updateContact}
               updateContactsList={updateContactsList}
+              setEditState={setEditState}
             ></ContactForm>
           </section>
-
-          <footer className="modal-card-foot">
-            <button className="button is-success" onClick={updateContact}>
-              Save changes
-            </button>
-            <button
-              onClick={() => {
-                setEditState("");
-              }}
-              className="button"
-            >
-              Cancel
-            </button>
-          </footer>
         </div>
       </div>
     </div>
