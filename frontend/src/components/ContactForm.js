@@ -59,7 +59,7 @@ export default function ContactForm({
               maxLength: 100,
             })}
           />
-          <p class="help is-danger">{errors.name?.message}</p>
+          <p className="help is-danger">{errors.name?.message}</p>
         </div>
       </div>
 
@@ -78,9 +78,9 @@ export default function ContactForm({
               },
             })}
           />
-          <p class="help is-danger">{errors.email?.message}</p>
+          <p className="help is-danger">{errors.email?.message}</p>
         </div>
-        {/* <p class="help is-danger">This email is invalid</p> */}
+        {/* <p className="help is-danger">This email is invalid</p> */}
       </div>
 
       <div className="columns">
@@ -100,7 +100,7 @@ export default function ContactForm({
                   },
                 })}
               />
-              <p class="help is-danger">{errors.phone?.message}</p>
+              <p className="help is-danger">{errors.phone?.message}</p>
             </div>
           </div>
         </div>
@@ -116,7 +116,7 @@ export default function ContactForm({
                   <option value="Female">Female</option>
                   <option value="Non-binary">Non-binary</option>
                 </select>
-                {/* <p class="help is-danger">{errors.gender?.message}</p> // gender has no error currently */}
+                {/* <p className="help is-danger">{errors.gender?.message}</p> // gender has no error currently */}
               </div>
             </div>
           </div>
